@@ -18,7 +18,6 @@ class PostController extends Controller
     {
         $posts = Post::all();
 
-        Debugbar::debug($posts);
         return view('pages.index')->with('posts', $posts);
     }
 
@@ -54,7 +53,7 @@ class PostController extends Controller
         $comments = Comment::with('post')
             ->where('post_id', '=', $blog->getAttribute('id'))
             ->get();
-            
+
         return view('pages.show')->with(['post' => $blog, 'comments' => $comments]);
     }
 
