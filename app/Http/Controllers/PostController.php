@@ -21,13 +21,25 @@ class PostController extends Controller
     }
 
     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function userPosts()
+    {
+        $posts = Post::all()->where('user_id', '=', auth()->user()->id);
+
+        return view('pages.index')->with('posts', $posts);
+    }
+
+    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function create()
     {
-        //
+        return view('pages.createPost');
     }
 
     /**
@@ -38,7 +50,20 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'title' => 'required|max:255',
+            'content' => 'required|max:8096'
+        ]);
+
+        $blog = Post::create([
+            'title' => $request->title,
+            'content' => $request->content,
+            'score' => 0,
+            'user_id' => auth()->user()->id,
+        ]);
+
+        return redirect()->route('blog.show', $blog)
+            ->with('success', 'Článek vytvořen');;
     }
 
     /**
@@ -53,7 +78,7 @@ class PostController extends Controller
             ->where('post_id', '=', $blog->getAttribute('id'))
             ->get();
 
-        return view('pages.show')->with(['post' => $blog, 'comments' => $comments]);
+        return view('pages.showPost')->with(['post' => $blog, 'comments' => $comments]);
     }
 
     /**
@@ -64,7 +89,7 @@ class PostController extends Controller
      */
     public function edit(Post $blog)
     {
-        //
+        return view('pages.editPost')->with('post', $blog);
     }
 
     /**

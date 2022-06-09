@@ -9,6 +9,18 @@ class Post extends Model
 {
     use HasFactory;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'title',
+        'content',
+        'score',
+        'user_id',
+    ];
+
     public function comments()
     {
         return $this->hasMany(Comment::class);
