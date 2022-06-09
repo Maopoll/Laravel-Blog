@@ -1,11 +1,11 @@
-<form class="w-3/5 m-auto" action="{{ route('blog.store') }}" method="POST">
+<form class="w-3/5 m-auto" action="{{ $route == route('blog.create') ? route('blog.store') : route('blog.update', $post->id) }}" method="POST">
     @csrf
     @if($route == route('blog.edit', $post->id ?? ''))
     @method('PATCH')
     @endif
     <div class="m-4">
         <label for="title">Titulek</label>
-        <input class="rounded-lg w-full bg-gray-100 border-2 p-2" type="text" id="title" placeholder="Lorem ipsum..." name="title" value="{{ old('title', $post->title ?? '') }}">
+        <input class="rounded-sm w-full bg-gray-100 border-1 p-2" type="text" id="title" placeholder="Lorem ipsum..." name="title" value="{{ old('title', $post->title ?? '') }}">
 
         @error('title')
         <div class="text-red-500 mt-2 text-sm">
@@ -15,7 +15,7 @@
     </div>
     <div class="m-4">
         <label for="content">Obsah</label>
-        <textarea class="rounded-lg w-full bg-gray-100 border-2 p-2 h-52 flex" id="content" placeholder="Lorem ipsum ..." name="content" value="{{ old('content', $post->content ?? '') }}">{{ old('content', $post->content ?? '') }}</textarea>
+        <textarea class="rounded-sm w-full bg-gray-100 border-1 p-2 h-52 flex" id="content" placeholder="Lorem ipsum ..." name="content" value="{{ old('content', $post->content ?? '') }}">{{ old('content', $post->content ?? '') }}</textarea>
 
         @error('content')
         <div class="text-red-500 mt-2 text-sm">

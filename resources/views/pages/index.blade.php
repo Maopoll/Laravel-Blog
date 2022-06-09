@@ -5,15 +5,5 @@
         </h2>
     </x-slot>
 
-    <div class="py-12">
-        <div class="flex flex-col w-3/5 text-center m-auto">
-            @forelse($posts as $post)
-            <ul>
-                <li class="bg-white m-2"><a href="{{ route('blog.show', ['blog' => $post]) }}">{{ ucfirst($post->title) }}</a></li>
-            </ul>
-            @empty
-            <p class="text-warning">No Posts available</p>
-            @endforelse
-        </div>
-    </div>
+    <x-post-list :posts="$posts" />
 </x-app-layout>

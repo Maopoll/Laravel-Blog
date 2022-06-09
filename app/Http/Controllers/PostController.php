@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Comment;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class PostController extends Controller
 {
@@ -29,7 +30,7 @@ class PostController extends Controller
     {
         $posts = Post::all()->where('user_id', '=', auth()->user()->id);
 
-        return view('pages.index')->with('posts', $posts);
+        return view('pages.dashboard')->with('posts', $posts);
     }
 
     /**
@@ -62,14 +63,15 @@ class PostController extends Controller
             'user_id' => auth()->user()->id,
         ]);
 
-        return redirect()->route('blog.show', $blog)
-            ->with('success', 'Článek vytvořen');;
+        return redirect()
+            ->route('blog.show', $blog)
+            ->with('success', 'Článek vytvořen');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Post  $post
+     * @param  \App\Models\Post  $blog
      * @return \Illuminate\Http\Response
      */
     public function show(Post $blog)
@@ -84,11 +86,13 @@ class PostController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Post  $post
+     * @param  \App\Models\Post  $blog
      * @return \Illuminate\Http\Response
      */
     public function edit(Post $blog)
     {
+        Gate::denyIf(fn () => auth()->user()->getAuthIdentifier() != $blog->user->id);
+
         return view('pages.editPost')->with('post', $blog);
     }
 
@@ -96,21 +100,30 @@ class PostController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Post  $post
+     * @param  \App\Models\Post  $blog
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Post $post)
+    public function update(Request $request, Post $blog)
     {
-        //
+        Gate::denyIf(fn () => auth()->user()->getAuthIdentifier() != $blog->user->id);
+
+        $attributes = $request->validate([
+            'title' => 'required|max:255',
+            'content' => 'required|max:8096'
+        ]);
+
+        $blog->update($attributes);
+
+        return redirect()->route('index')->with('success', 'Článek upraven');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Post  $post
+     * @param  \App\Models\Post  $blog
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Post $post)
+    public function destroy(Post $blog)
     {
         //
     }

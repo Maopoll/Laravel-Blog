@@ -5,7 +5,7 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}">
+                    <a href="{{ route('index') }}">
                         <x-application-logo class="block h-10 w-auto fill-current text-gray-600" />
                     </a>
                 </div>
@@ -21,11 +21,13 @@
                         {{ __('Články') }}
                     </x-nav-link>
                 </div>
+                @auth
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-nav-link :href="route('blog.create')" :active="request()->routeIs('blog.create')">
                         {{ __('Přidat článek') }}
                     </x-nav-link>
                 </div>
+                @endauth
             </div>
 
             <!-- Settings Dropdown -->
@@ -90,9 +92,11 @@
             <x-responsive-nav-link :href="route('index')" :active="request()->routeIs('index')">
                 {{ __('Články') }}
             </x-responsive-nav-link>
+            @auth
             <x-responsive-nav-link :href="route('blog.create')" :active="request()->routeIs('blog.create')">
                 {{ __('Přidat článek') }}
             </x-responsive-nav-link>
+            @endauth
         </div>
 
         <!-- Responsive Settings Options -->
