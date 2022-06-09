@@ -18,7 +18,7 @@ return new class extends Migration
             $table->text('content');
             $table->bigInteger('like_score');
             $table->foreignId('user_id')->references('id')->on('users');
-            $table->foreignId('post_id')->references('id')->on('posts');
+            $table->foreignId('post_id')->references('id')->on('posts')->onDelete('cascade');
             $table->timestamps();
         });
     }

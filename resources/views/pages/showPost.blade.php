@@ -20,11 +20,13 @@
                         Editovat
                     </button>
                 </a>
-                <a href="{{ route('blog.destroy', ['blog' => $post]) }}">
-                    <button class="rounded-md border border-transparent bg-red-800 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-red-900">
+                <form action="{{ route('blog.destroy', ['blog' => $post]) }}" method="POST">
+                    @method('DELETE')
+                    @csrf
+                    <button type="submit" class="rounded-md border border-transparent bg-red-800 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-red-900">
                         Smazat
                     </button>
-                </a>
+                </form>
             </div>
             @endcan
         </div>
