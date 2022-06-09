@@ -124,6 +124,8 @@ class PostController extends Controller
      */
     public function destroy(Post $blog)
     {
-        //
+        $blog->delete();
+
+        return redirect()->route('index');
     }
 }
