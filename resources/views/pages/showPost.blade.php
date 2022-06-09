@@ -14,7 +14,7 @@
                 </div>
             </div>
             @can('update', $post)
-            <div>
+            <div class="flex justify-center gap-4 my-3">
                 <a href="{{ route('blog.edit', ['blog' => $post]) }}">
                     <button class="rounded-md border border-transparent bg-blue-800 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-blue-900">
                         Editovat

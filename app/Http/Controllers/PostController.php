@@ -105,8 +105,6 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $blog)
     {
-        Gate::denyIf(fn () => auth()->user()->getAuthIdentifier() != $blog->user->id);
-
         $attributes = $request->validate([
             'title' => 'required|max:255',
             'content' => 'required|max:8096'
@@ -114,7 +112,8 @@ class PostController extends Controller
 
         $blog->update($attributes);
 
-        return redirect()->route('index')->with('success', 'Článek upraven');
+        return redirect()->route('blog.show', $blog)
+            ->with('success', 'Článek upraven');
     }
 
     /**
